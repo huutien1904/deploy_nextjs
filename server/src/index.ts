@@ -60,9 +60,13 @@ const start = async () => {
       prefix: '/test'
     })
     await fastify.listen({
-      port: envConfig.PORT
+      port: envConfig.PORT,
+      host: envConfig.IS_PRODUCTION ? '0.0.0.0' : 'localhost'
     })
-    console.log(`Server đang chạy: ${API_URL}`)
+    console.log(`Server đang chạy dưới local tại: ${API_URL}`)
+    if (envConfig.IS_PRODUCTION) {
+      console.log(`Đang ở mode production với domain: ${envConfig.PRODUCTION_URL}`)
+    }
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)

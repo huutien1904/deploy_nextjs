@@ -10,12 +10,13 @@ module.exports = {
     },
     {
       name: "client",
-      script: "cmd",
-      args: "/c npm run start",
+      script: "npm",
+      args: "run start",
       cwd: "./client",
       watch: false,
       instances: 1,
-      autorestart: true
+      autorestart: true,
     }
+
   ]
 }

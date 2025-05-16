@@ -24,7 +24,9 @@ const configSchema = z.object({
   DOMAIN: z.string(),
   PROTOCOL: z.string(),
   UPLOAD_FOLDER: z.string(),
-  COOKIE_MODE: z.enum(['true', 'false']).transform((val) => val === 'true')
+  COOKIE_MODE: z.enum(['true', 'false']).transform((val) => val === 'true'),
+  IS_PRODUCTION: z.enum(['true', 'false']).transform((val) => val === 'true'),
+  PRODUCTION_URL: z.string()
 })
 
 const configServer = configSchema.safeParse(process.env)
@@ -34,7 +36,9 @@ if (!configServer.success) {
   throw new Error('Các giá trị khai báo trong file .env không hợp lệ')
 }
 const envConfig = configServer.data
-export const API_URL = `${envConfig.PROTOCOL}://${envConfig.DOMAIN}:${envConfig.PORT}`
+export const API_URL = envConfig.IS_PRODUCTION
+  ? envConfig.PRODUCTION_URL
+  : `${envConfig.PROTOCOL}://${envConfig.DOMAIN}:${envConfig.PORT}`
 export default envConfig
 
 declare global {
